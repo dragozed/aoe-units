@@ -1,14 +1,29 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { unitsList } from "../../redux/unitsAction";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Units.scss";
-import Header from "../Header/Header";
 import CostsFilter from "./CostsFilter/CostsFilter";
 import AgesFilter from "./AgesFilter/AgesFilter";
+
+//mui components
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 
 function Units() {
   const dispatch = useDispatch();
   let data = useSelector((state) => state.unitsData);
+
+  useEffect(() => {
+    dispatch(unitsList());
+  }, []);
 
   const [filters, setFilters] = useState({
     ageFilter: "All",
@@ -16,10 +31,6 @@ function Units() {
     foodFilter: 200,
     goldFilter: 200,
   });
-
-  useEffect(() => {
-    dispatch(unitsList());
-  }, []);
 
   const displayWood = (item) => {
     let display;
@@ -51,7 +62,6 @@ function Units() {
 
   return (
     <>
-      <Header />
       <div className="filters-container">
         <AgesFilter setFilters={setFilters} ageFilter={filters.ageFilter} />
         <CostsFilter
@@ -62,40 +72,52 @@ function Units() {
         />
       </div>
       <div className="units-container">
-        <div className="unit">
-          <div>id:</div>
-          <div>Name: </div>
-          <div>Age: </div>
-          <div>Costs:</div>
-        </div>
-        {data.map((item) => (
-          <div
-            className={
-              (filters.ageFilter !== "All" && filters.ageFilter !== item.age) ||
-              (item.cost !== null && item.cost.Wood !== undefined
-                ? filters.woodFilter < item.cost.Wood
-                : "") ||
-              (item.cost !== null && item.cost.Food !== undefined
-                ? filters.foodFilter < item.cost.Food
-                : "") ||
-              (item.cost !== null && item.cost.Gold !== undefined
-                ? filters.goldFilter < item.cost.Gold
-                : "")
-                ? "hidden"
-                : ""
-            }
-            key={item.id}
-          >
-            <div className="unit">
-              <div>{item.id}</div>
-              <div>{item.name}</div>
-              <div>{item.age}</div>
-              {item.cost !== null ? displayWood(item) : <div>Null</div>}
-              {item.cost !== null ? displayFood(item) : ""}
-              {item.cost !== null ? displayGold(item) : ""}
-            </div>
-          </div>
-        ))}
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">ID</TableCell>
+                <TableCell align="center">Name</TableCell>
+                <TableCell align="center">Age</TableCell>
+                <TableCell align="center">Costs</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((item) => (
+                <TableRow
+                  sx={{ height: 75 }}
+                  key={item.id}
+                  className={
+                    (filters.ageFilter !== "All" &&
+                      filters.ageFilter !== item.age) ||
+                    (item.cost !== null && item.cost.Wood !== undefined
+                      ? filters.woodFilter < item.cost.Wood
+                      : "") ||
+                    (item.cost !== null && item.cost.Food !== undefined
+                      ? filters.foodFilter < item.cost.Food
+                      : "") ||
+                    (item.cost !== null && item.cost.Gold !== undefined
+                      ? filters.goldFilter < item.cost.Gold
+                      : "")
+                      ? "hidden"
+                      : ""
+                  }
+                >
+                  <TableCell component={"th"} scope="row" align="center">
+                    <Link to={`/units/${item.id}`}>{item.id}</Link>
+                  </TableCell>
+                  <TableCell align="center">{item.name}</TableCell>
+                  <TableCell align="center">{item.age}</TableCell>
+                  <TableCell align="center">
+                    {item.cost !== null ? displayWood(item) : <div>Null</div>}
+                    {item.cost !== null ? displayFood(item) : ""}
+                    {item.cost !== null ? displayGold(item) : ""}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </>
   );

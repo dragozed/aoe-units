@@ -25,7 +25,7 @@ function CostsFilter(props) {
   };
   return (
     <>
-      <div>Costs</div>
+      <div className="costs-text">Costs</div>
       <div className="costs-filter">
         <div className="range-filter">
           <input

@@ -1,0 +1,9 @@
+$small: 700px;
+
+.unit-detail-container {
+  @media screen and (min-width: $small) {
+    width: 70%;
+    padding-left: 15%;
+    padding-top: 40px;
+  }
+}
