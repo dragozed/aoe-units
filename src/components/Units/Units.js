@@ -71,7 +71,16 @@ function Units() {
         {data.map((item) => (
           <div
             className={
-              filters.ageFilter !== "All" && filters.ageFilter !== item.age
+              (filters.ageFilter !== "All" && filters.ageFilter !== item.age) ||
+              (item.cost !== null && item.cost.Wood !== undefined
+                ? filters.woodFilter < item.cost.Wood
+                : "") ||
+              (item.cost !== null && item.cost.Food !== undefined
+                ? filters.foodFilter < item.cost.Food
+                : "") ||
+              (item.cost !== null && item.cost.Gold !== undefined
+                ? filters.goldFilter < item.cost.Gold
+                : "")
                 ? "hidden"
                 : ""
             }
