@@ -30,7 +30,12 @@ function CostsFilter(props) {
         <div className="range-filter">
           <input
             type={"checkbox"}
-            onChange={() => setDisableWood(!disableWood)}
+            onChange={() => {
+              if (!disableWood) {
+                setWoodFilter(200);
+              }
+              setDisableWood(!disableWood);
+            }}
           />
           <div>Wood</div>
           <input
@@ -47,7 +52,12 @@ function CostsFilter(props) {
         <div className="range-filter">
           <input
             type={"checkbox"}
-            onChange={() => setDisableFood(!disableFood)}
+            onChange={() => {
+              if (!disableFood) {
+                setFoodFilter(200);
+              }
+              setDisableFood(!disableFood);
+            }}
           />
           <div>Food</div>
           <input
@@ -64,7 +74,12 @@ function CostsFilter(props) {
         <div className="range-filter">
           <input
             type={"checkbox"}
-            onChange={() => setDisableGold(!disableGold)}
+            onChange={() => {
+              if (!disableGold) {
+                setGoldFilter(200);
+              }
+              setDisableGold(!disableGold);
+            }}
           />
           <div>Gold</div>
           <input
