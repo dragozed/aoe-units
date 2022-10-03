@@ -27,9 +27,9 @@ function Units() {
 
   const [filters, setFilters] = useState({
     ageFilter: "All",
-    woodFilter: 200,
-    foodFilter: 200,
-    goldFilter: 200,
+    woodFilter: 225,
+    foodFilter: 225,
+    goldFilter: 225,
   });
 
   const displayWood = (item) => {
@@ -76,42 +76,58 @@ function Units() {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="center">ID</TableCell>
-                <TableCell align="center">Name</TableCell>
-                <TableCell align="center">Age</TableCell>
-                <TableCell align="center">Costs</TableCell>
+                <TableCell className="table-head" align="center">
+                  ID
+                </TableCell>
+                <TableCell className="table-head" align="center">
+                  Name
+                </TableCell>
+                <TableCell className="table-head" align="center">
+                  Age
+                </TableCell>
+                <TableCell className="table-head" align="center">
+                  Costs
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((item) => (
                 <TableRow
+                  component={Link}
+                  to={`/units/${item.id}`}
                   sx={{ height: 75 }}
                   key={item.id}
                   className={
                     (filters.ageFilter !== "All" &&
-                      filters.ageFilter !== item.age) ||
-                    (item.cost !== null && item.cost.Wood !== undefined
+                      (filters.ageFilter === "Dark"
+                        ? item.age !== "Dark"
+                        : filters.ageFilter === "Feudal"
+                        ? item.age !== "Feudal" && item.age !== "Dark"
+                        : filters.ageFilter === "Castle"
+                        ? item.age === "Imperial"
+                        : "")) ||
+                    (item.cost && item.cost.Wood !== undefined
                       ? filters.woodFilter < item.cost.Wood
                       : "") ||
-                    (item.cost !== null && item.cost.Food !== undefined
+                    (item.cost && item.cost.Food !== undefined
                       ? filters.foodFilter < item.cost.Food
                       : "") ||
-                    (item.cost !== null && item.cost.Gold !== undefined
+                    (item.cost && item.cost.Gold !== undefined
                       ? filters.goldFilter < item.cost.Gold
                       : "")
-                      ? "hidden"
-                      : ""
+                      ? "table-row hidden"
+                      : "table-row"
                   }
                 >
                   <TableCell component={"th"} scope="row" align="center">
-                    <Link to={`/units/${item.id}`}>{item.id}</Link>
+                    {item.id}
                   </TableCell>
                   <TableCell align="center">{item.name}</TableCell>
                   <TableCell align="center">{item.age}</TableCell>
                   <TableCell align="center">
-                    {item.cost !== null ? displayWood(item) : <div>Null</div>}
-                    {item.cost !== null ? displayFood(item) : ""}
-                    {item.cost !== null ? displayGold(item) : ""}
+                    {item.cost ? displayWood(item) : "Free Unit"}
+                    {item.cost ? displayFood(item) : ""}
+                    {item.cost ? displayGold(item) : ""}
                   </TableCell>
                 </TableRow>
               ))}

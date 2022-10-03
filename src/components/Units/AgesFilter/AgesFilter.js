@@ -9,8 +9,8 @@ function AgesFilter(props) {
   };
   return (
     <>
-      <div>Ages</div>
       <div className="ages-filter">
+        <div className="ages-text">Ages</div>
         <button
           onClick={() => {
             setAgeFilter("All");
