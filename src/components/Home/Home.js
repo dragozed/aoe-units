@@ -6,7 +6,7 @@ export const Home = () => {
     <>
       <div className="home">
         <div className="home-text">Age of Empires Units</div>
-        <img className="image" src="./aoe2.jpg" />
+        <img className="image" src="./aoe2.jpg" alt="Age of Empires 2" />
       </div>
     </>
   );

@@ -23,6 +23,7 @@ function Units() {
 
   useEffect(() => {
     dispatch(unitsList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [filters, setFilters] = useState({
