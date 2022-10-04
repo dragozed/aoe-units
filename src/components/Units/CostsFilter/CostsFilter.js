@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 
 //mui components
 import { Checkbox, FormControlLabel, Slider } from "@mui/material";
 function CostsFilter(props) {
-  const [disableWood, setDisableWood] = useState(true);
-  const [disableFood, setDisableFood] = useState(true);
-  const [disableGold, setDisableGold] = useState(true);
-
   const setWoodFilter = (value) => {
     props.setFilters((existingValues) => ({
       ...existingValues,
       woodFilter: value,
+    }));
+  };
+  const setWoodFilterActive = (value) => {
+    props.setFilters((existingValues) => ({
+      ...existingValues,
+      woodFilterActive: value,
     }));
   };
   const setFoodFilter = (value) => {
@@ -19,10 +21,22 @@ function CostsFilter(props) {
       foodFilter: value,
     }));
   };
+  const setFoodFilterActive = (value) => {
+    props.setFilters((existingValues) => ({
+      ...existingValues,
+      foodFilterActive: value,
+    }));
+  };
   const setGoldFilter = (value) => {
     props.setFilters((existingValues) => ({
       ...existingValues,
       goldFilter: value,
+    }));
+  };
+  const setGoldFilterActive = (value) => {
+    props.setFilters((existingValues) => ({
+      ...existingValues,
+      goldFilterActive: value,
     }));
   };
   return (
@@ -35,26 +49,26 @@ function CostsFilter(props) {
               <Checkbox
                 defaultChecked={false}
                 onChange={() => {
-                  if (!disableWood) {
-                    setWoodFilter(225);
+                  if (props.woodFilterActive) {
+                    setWoodFilter([0, 225]);
                   }
-                  setDisableWood(!disableWood);
+                  setWoodFilterActive(!props.woodFilterActive);
                 }}
               />
             }
             label="Wood"
           />
           <Slider
-            sx={{ width: 150, marginRight: 3 }}
-            disabled={disableWood}
+            sx={{ width: 400, marginRight: 3 }}
+            disabled={!props.woodFilterActive}
             min={0}
             max={225}
             value={props.woodFilter}
             onChange={(e) => setWoodFilter(e.target.value)}
-            aria-label="Default"
+            getAriaLabel={() => "Default"}
             valueLabelDisplay="auto"
           />
-          <div>{props.woodFilter}</div>
+          <div>{props.woodFilter[0] + "-" + props.woodFilter[1]}</div>
         </div>
         <div className="range-filter">
           <FormControlLabel
@@ -62,26 +76,26 @@ function CostsFilter(props) {
               <Checkbox
                 defaultChecked={false}
                 onChange={() => {
-                  if (!disableFood) {
-                    setFoodFilter(225);
+                  if (props.foodFilterActive) {
+                    setFoodFilter([0, 225]);
                   }
-                  setDisableFood(!disableFood);
+                  setFoodFilterActive(!props.foodFilterActive);
                 }}
               />
             }
             label="Food"
           />
           <Slider
-            sx={{ width: 150, marginRight: 3 }}
-            disabled={disableFood}
+            sx={{ width: 400, marginRight: 3 }}
+            disabled={!props.foodFilterActive}
             min={0}
             max={225}
             value={props.foodFilter}
             onChange={(e) => setFoodFilter(e.target.value)}
-            aria-label="Default"
+            getAriaLabel={() => "Default"}
             valueLabelDisplay="auto"
           />
-          <div>{props.foodFilter}</div>
+          <div>{props.foodFilter[0] + "-" + props.foodFilter[1]}</div>
         </div>
         <div className="range-filter">
           <FormControlLabel
@@ -89,26 +103,26 @@ function CostsFilter(props) {
               <Checkbox
                 defaultChecked={false}
                 onChange={() => {
-                  if (!disableGold) {
-                    setGoldFilter(225);
+                  if (props.goldFilterActive) {
+                    setGoldFilter([0, 225]);
                   }
-                  setDisableGold(!disableGold);
+                  setGoldFilterActive(!props.goldFilterActive);
                 }}
               />
             }
             label="Gold"
           />
           <Slider
-            sx={{ width: 150, marginRight: 3 }}
-            disabled={disableGold}
+            sx={{ width: 400, marginRight: 3 }}
+            disabled={!props.goldFilterActive}
             min={0}
             max={225}
             value={props.goldFilter}
             onChange={(e) => setGoldFilter(e.target.value)}
-            aria-label="Default"
+            getAriaLabel={() => "Default"}
             valueLabelDisplay="auto"
           />
-          <div>{props.goldFilter}</div>
+          <div>{props.goldFilter[0] + "-" + props.goldFilter[1]}</div>
         </div>
       </div>
     </>

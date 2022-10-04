@@ -28,9 +28,12 @@ function Units() {
 
   const [filters, setFilters] = useState({
     ageFilter: "All",
-    woodFilter: 225,
-    foodFilter: 225,
-    goldFilter: 225,
+    woodFilter: [0, 225],
+    foodFilter: [0, 225],
+    goldFilter: [0, 225],
+    woodFilterActive: false,
+    foodFilterActive: false,
+    goldFilterActive: false,
   });
 
   const displayWood = (item) => {
@@ -67,31 +70,51 @@ function Units() {
         <AgesFilter setFilters={setFilters} ageFilter={filters.ageFilter} />
         <CostsFilter
           setFilters={setFilters}
+          filters={filters}
           woodFilter={filters.woodFilter}
           foodFilter={filters.foodFilter}
           goldFilter={filters.goldFilter}
+          woodFilterActive={filters.woodFilterActive}
+          foodFilterActive={filters.foodFilterActive}
+          goldFilterActive={filters.goldFilterActive}
         />
       </div>
       <div className="units-container">
         <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell className="table-head" align="center">
+          <Table component={"div"}>
+            <TableHead component={"div"}>
+              <TableRow component={"div"}>
+                <TableCell
+                  component={"div"}
+                  className="table-head"
+                  align="center"
+                >
                   ID
                 </TableCell>
-                <TableCell className="table-head" align="center">
+                <TableCell
+                  component={"div"}
+                  className="table-head"
+                  align="center"
+                >
                   Name
                 </TableCell>
-                <TableCell className="table-head" align="center">
+                <TableCell
+                  component={"div"}
+                  className="table-head"
+                  align="center"
+                >
                   Age
                 </TableCell>
-                <TableCell className="table-head" align="center">
+                <TableCell
+                  component={"div"}
+                  className="table-head"
+                  align="center"
+                >
                   Costs
                 </TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody component={"div"}>
               {data.map((item) => (
                 <TableRow
                   component={Link}
@@ -106,26 +129,42 @@ function Units() {
                         ? item.age !== "Feudal" && item.age !== "Dark"
                         : filters.ageFilter === "Castle"
                         ? item.age === "Imperial"
-                        : "")) ||
+                        : "")) || //end of age filters
                     (item.cost && item.cost.Wood !== undefined
-                      ? filters.woodFilter < item.cost.Wood
+                      ? filters.woodFilter[1] < item.cost.Wood ||
+                        item.cost.Wood < filters.woodFilter[0]
                       : "") ||
                     (item.cost && item.cost.Food !== undefined
-                      ? filters.foodFilter < item.cost.Food
+                      ? filters.foodFilter[1] < item.cost.Food ||
+                        item.cost.Food < filters.foodFilter[0]
                       : "") ||
                     (item.cost && item.cost.Gold !== undefined
-                      ? filters.goldFilter < item.cost.Gold
-                      : "")
+                      ? filters.goldFilter[1] < item.cost.Gold ||
+                        item.cost.Gold < filters.goldFilter[0]
+                      : "") || //hide according to value range end
+                    (item.cost === null || item.cost.Wood === undefined
+                      ? filters.woodFilter[0] > 0
+                      : "") ||
+                    (item.cost === null || item.cost.Food === undefined
+                      ? filters.foodFilter[0] > 0
+                      : "") ||
+                    (item.cost === null || item.cost.Gold === undefined
+                      ? filters.goldFilter[0] > 0
+                      : "") //hide free units and undefined material cost end
                       ? "table-row hidden"
                       : "table-row"
                   }
                 >
-                  <TableCell component={"th"} scope="row" align="center">
+                  <TableCell component={"div"} scope="row" align="center">
                     {item.id}
                   </TableCell>
-                  <TableCell align="center">{item.name}</TableCell>
-                  <TableCell align="center">{item.age}</TableCell>
-                  <TableCell align="center">
+                  <TableCell component={"div"} align="center">
+                    {item.name}
+                  </TableCell>
+                  <TableCell component={"div"} align="center">
+                    {item.age}
+                  </TableCell>
+                  <TableCell component={"div"} align="center">
                     {item.cost ? displayWood(item) : "Free Unit"}
                     {item.cost ? displayFood(item) : ""}
                     {item.cost ? displayGold(item) : ""}
